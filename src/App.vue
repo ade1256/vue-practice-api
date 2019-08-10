@@ -1,29 +1,38 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="area">
+      <router-view/>
     </div>
-    <router-view />
+    <nav class="main-menu">
+      <ul>
+        <li>
+          <router-link to="/">
+            <i class="fa fa-home fa-2x"></i>
+            <span class="nav-text">Home</span>
+          </router-link>
+        </li>
+      </ul>
+      <ul class="logout">
+        <li>
+          <a href="#">
+            <i class="fa fa-power-off fa-2x"></i>
+            <span class="nav-text">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+@import '@/assets/scss/main.scss';
 </style>
+
+<script>
+export default {
+  name: 'app',
+  components: {}
+}
+</script>
+
+<style>
