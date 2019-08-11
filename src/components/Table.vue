@@ -1,62 +1,76 @@
 <template>
-  <div>
-    <md-table v-model="users" md-sort="name" md-sort-order="asc" md-card>
+  <div class="table">
+    <md-table
+      v-model="$store.state.dataEmployee"
+      md-card
+      @md-selected="onSelect"
+      md-sort="name"
+      md-sort-order="asc"
+    >
       <md-table-toolbar>
-        <h1 class="md-title">Users</h1>
+        <h1 class="md-title">{{title}}</h1>
       </md-table-toolbar>
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="ID" md-numeric>{{ item.id }}</md-table-cell>
-        <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Email" md-sort-by="email">{{ item.email }}</md-table-cell>
-        <md-table-cell md-label="Gender" md-sort-by="gender">{{ item.gender }}</md-table-cell>
-        <md-table-cell md-label="Job Title" md-sort-by="title">{{ item.title }}</md-table-cell>
+      <md-table-toolbar slot="md-table-alternate-header" slot-scope="{ count }">
+        <div class="md-toolbar-section-start">{{ getAlternateLabel(count) }}</div>
+
+        <div class="md-toolbar-section-end">
+          <md-button class="md-icon-button">
+            <md-icon>delete</md-icon>
+          </md-button>
+        </div>
+      </md-table-toolbar>
+      <div v-if="$store.state.dataEmployee.length  < 1" style="text-align:center">
+        <Loading/>
+      </div>
+      <md-table-row
+        slot="md-table-row"
+        slot-scope="{ item }"
+        md-selectable="multiple"
+        md-auto-select
+      >
+        <md-table-cell md-label="ID" md-numeric md-sort-by="id">{{ item.id }}</md-table-cell>
+        <md-table-cell md-label="Name" md-sort-by="employee_name">{{ item.employee_name }}</md-table-cell>
+        <md-table-cell md-label="Salary" md-sort-by="employee_salary">{{ item.employee_salary }}</md-table-cell>
+        <md-table-cell md-label="Age" md-sort-by="employee_age">{{ item.employee_age }}</md-table-cell>
+        <md-table-cell md-label="Image" md-sort-by="profile_image">{{ item.profile_image }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
 </template>
 
 <script>
+import Loading from '@/components/Loading'
 export default {
-  name: 'TableSort',
+  name: 'Table',
+  components: { Loading },
+  props: ['title'],
   data: () => ({
-    users: [
-      {
-        id: 1,
-        name: 'Shawna Dubbin',
-        email: 'sdubbin0@geocities.com',
-        gender: 'Male',
-        title: 'Assistant Media Planner'
-      },
-      {
-        id: 2,
-        name: 'Odette Demageard',
-        email: 'odemageard1@spotify.com',
-        gender: 'Female',
-        title: 'Account Coordinator'
-      },
-      {
-        id: 3,
-        name: 'Lonnie Izkovitz',
-        email: 'lizkovitz3@youtu.be',
-        gender: 'Female',
-        title: 'Operator'
-      },
-      {
-        id: 4,
-        name: 'Thatcher Stave',
-        email: 'tstave4@reference.com',
-        gender: 'Male',
-        title: 'Software Test Engineer III'
-      },
-      {
-        id: 5,
-        name: 'Clarinda Marieton',
-        email: 'cmarietonh@theatlantic.com',
-        gender: 'Female',
-        title: 'Paralegal'
+    selected: []
+  }),
+  mounted: function() {},
+  methods: {
+    onSelect(items) {
+      this.selected = items
+    },
+    getAlternateLabel(count) {
+      let plural = ''
+
+      if (count > 1) {
+        plural = 's'
       }
-    ]
-  })
+
+      return `${count} user${plural} selected`
+    }
+  }
 }
 </script>
+
+<style lang="scss" scoped>
+.table {
+  position: relative;
+  width: 900px;
+  margin: 0 auto;
+  top: 100px;
+}
+</style>
